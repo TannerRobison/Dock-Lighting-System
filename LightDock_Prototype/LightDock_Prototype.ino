@@ -25,12 +25,11 @@ void loop() {
     if (userInput > 0) userInput = userInput - 4;
     //if (userInput > upperLimit) userInput = upperLimit;
     if (userInput < 0) userInput = 0;
-    delay(25); //debouncing
+    
   }
   if (digitalRead(encodePin1) == 1 && digitalRead(encodePin2) == 0) {
     if (userInput < upperLimit) userInput = userInput + 4;
     if (userInput > upperLimit) userInput = upperLimit;
-    delay(25); //debouncing
   }
 
   //puts input on an exponential scale
