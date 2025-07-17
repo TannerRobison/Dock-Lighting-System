@@ -10,7 +10,8 @@ const int upperLimit = 100;
 //These Two variables are for debouncing
 int currentMillis = 0; 
 int previousMillis = 0;
-const int pollingInterval = 20;
+const int pollingInterval = 50;
+const int increment = 4;
 
 void setup() {
  pinMode(pwmPin, OUTPUT);
@@ -24,7 +25,7 @@ void setup() {
 
 void loop() {
   //determines user input
-  int increment = 4;
+  
   currentMillis = millis();
   
   if ((currentMillis - previousMillis) >= pollingInterval) {
@@ -37,6 +38,7 @@ void loop() {
       if (userInput < upperLimit) userInput = userInput + increment;
       if (userInput > upperLimit) userInput = upperLimit;
     }
+    previousMillis = millis();
   }
   //puts input on an exponential scale
   if (userInput > 0) scaledInput = pow(3, userInput / 20);
