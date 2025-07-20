@@ -1,0 +1,19 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "9b895783-7004-4aa7-a2af-83d099131a9c")
+	(paper "A4")
+	(title_block
+		(title "Control_Dock")
+		(date "2025-07-20")
+		(rev "1.0")
+	)
+	(lib_symbols)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)

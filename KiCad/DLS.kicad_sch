@@ -1575,16 +1575,6 @@
 		)
 		(uuid "5b12dccf-62fe-4e80-b3c6-d9f73f939186")
 	)
-	(text "Testing Here"
-		(exclude_from_sim no)
-		(at 129.032 90.932 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "f8020f02-698b-47fd-b353-3b403deaf9a9")
-	)
 	(no_connect
 		(at 69.85 34.29)
 		(uuid "05d209ef-a069-49f2-94d7-3da6d07c4be5")
