@@ -1,4 +1,6 @@
 #include <math.h>
+#include <esp_now.h>
+#include <WiFi.h>
 
 int userInput = 0;
 int scaledInput = 0;
@@ -7,25 +9,17 @@ const int pwmPin = D4;
 const int encodePin1 = D8;
 const int encodePin2 = D9;
 const int upperLimit = 100;
+
 //These Two variables are for debouncing
 int currentMillis = 0; 
 int previousMillis = 0;
+
+//These two Variables are used for controlling input reactance
 const int pollingInterval = 10;
 const int increment = 5;
 
 void encoderMoved() {
-  ///This Function is called when the encoder is moved
-  currentMillis = millis();
-  if ((currentMillis - previousMillis) > pollingInterval) { 
-    if (digitalRead(encodePin2) == 1) { //moved left
-      if (userInput > 0) userInput = userInput - (increment*2);
-      if (userInput < 0) userInput = 0;
-    }
-    
-    if (digitalRead(encodePin2) == 0) { //moved right
-      if (userInput < upperLimit) userInput = userInput + increment;
-      if (userInput > upperLimit) userInput = upperLimit;
-    }
+  ///This Function is called when data is received
 
     //puts input on an exponential scale
     scaledInput = pow(3, userInput / 20);
@@ -57,10 +51,6 @@ void setup() {
  Serial.print("Booting up...");
 
  pinMode(pwmPin, OUTPUT);
- pinMode(encodePin1, INPUT_PULLUP);
- pinMode(encodePin2, INPUT_PULLUP);
-
- attachInterrupt(digitalPinToInterrupt(encodePin1), encoderMoved, FALLING);
 }
 
 void loop() {
