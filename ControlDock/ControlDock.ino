@@ -10,7 +10,7 @@ int currentMillis = 0;
 int previousMillis = 0;
 
 //These two Variables are used for controlling input reactance
-const int pollingInterval = 10;
+const int pollingInterval = 100;
 const int increment = 5;
 
 uint8_t broadcastAddress[] = {0x3C, 0x84, 0x27, 0xC3, 0xD3, 0x64}; //MAC Address of receiver
@@ -23,6 +23,7 @@ struct_message myData;
 
 esp_now_peer_info_t peerInfo; //Stores information about the peer
 
+//Check if package succesfully sent (not delivered)
 void OnDataSent (const uint8_t *mac_addr, esp_now_send_status_t status) {
   Serial.print("\r\nLast Packet Send Status:\t");
   Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
@@ -43,10 +44,15 @@ void encoderMoved() {
       if (myData.userInput < upperLimit) myData.userInput = myData.userInput + increment;
       if (myData.userInput > upperLimit) myData.userInput = upperLimit;
     }
+    Serial.print("User Input: ");
+    Serial.println(myData.userInput);
+    previousMillis = currentMillis;
+    return;
   }
-  previousMillis = currentMillis;
-  myData.userInput = 20; //Testing connection, remove later
-
+  else {
+    previousMillis = currentMillis;
+    return;
+  }
   
 }
 
@@ -55,7 +61,7 @@ void setup() {
   pinMode(encodePin1, INPUT_PULLUP);
   pinMode(encodePin2, INPUT_PULLUP);
 
-  //attachInterrupt(digitalPinToInterrupt(encodePin1), encoderMoved, FALLING);
+  attachInterrupt(digitalPinToInterrupt(encodePin1), encoderMoved, FALLING);
 
   WiFi.mode(WIFI_STA);
 
@@ -84,7 +90,6 @@ void setup() {
 }
 
 void loop() {
-  myData.userInput = 1;
   //sends data
   esp_err_t result = esp_now_send(broadcastAddress, (uint8_t*) &myData, sizeof(myData));
 
