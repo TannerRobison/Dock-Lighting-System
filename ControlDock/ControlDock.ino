@@ -13,31 +13,11 @@ int previousMillis = 0;
 const int pollingInterval = 10;
 const int increment = 5;
 
-//This function calls when encoder triggers interrupt
-void encoderMoved() {
-  currentMillis = millis();
-  if ((currentMillis - previousMillis) > pollingInterval) {
-    
-    if (digitalRead(encodePin2) == 1) { //moved left
-      if (userInput > lowerLimit) myData.userInput = myData.userInput - (increment*2);
-      if (userInput < lowerLimit) myData.userInput = 0;
-    }
-    
-    if (digitalRead(encodePin2) == 0) { //moved right
-      if (userInput < upperLimit) myData.userInput = myData.userInput + increment;
-      if (userInput > upperLimit) myData.userInput = upperLimit;
-    }
-  }
-
-  
-}
-
-
-uint8_t broadcastAddress[] = {0x3C, 0x84, 0x27, 0xC3, 0xD3, 0x64};
+uint8_t broadcastAddress[] = {0x3C, 0x84, 0x27, 0xC3, 0xD3, 0x64}; //MAC Address of receiver
 
 typedef struct struct_message {
   int userInput;
-} struct_message
+} struct_message;
 
 struct_message myData;
 
@@ -48,30 +28,69 @@ void OnDataSent (const uint8_t *mac_addr, esp_now_send_status_t status) {
   Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
 }
 
+
+//This function calls when encoder triggers interrupt
+void encoderMoved() {
+  currentMillis = millis();
+  if ((currentMillis - previousMillis) > pollingInterval) {
+    
+    if (digitalRead(encodePin2) == 1) { //moved left
+      if (myData.userInput > lowerLimit) myData.userInput = myData.userInput - (increment*2);
+      if (myData.userInput < lowerLimit) myData.userInput = lowerLimit;
+    }
+    
+    if (digitalRead(encodePin2) == 0) { //moved right
+      if (myData.userInput < upperLimit) myData.userInput = myData.userInput + increment;
+      if (myData.userInput > upperLimit) myData.userInput = upperLimit;
+    }
+  }
+  previousMillis = currentMillis;
+  myData.userInput = 20; //Testing connection, remove later
+
+  
+}
+
 void setup() {
   Serial.begin(115200);
+  pinMode(encodePin1, INPUT_PULLUP);
+  pinMode(encodePin2, INPUT_PULLUP);
+
+  //attachInterrupt(digitalPinToInterrupt(encodePin1), encoderMoved, FALLING);
 
   WiFi.mode(WIFI_STA);
 
   //init ESP_NOW
   if (esp_now_init() != ESP_OK) {
-    Serial.println("Error initializing ESP NOW");
+    Serial.print("Error initializing ESP NOW\n");
     return;
   }
+  else {
+    Serial.print("ESPNOW initialized\n");
+    delay(5000);
+  }
 
-  pinMode(encodePin1, INPUT_PULLUP);
-  pinMode(encodePin2, INPUT_PULLUP);
+  esp_now_register_send_cb(OnDataSent);
 
-  attachInterrupt(digitalPinToInterrupt(encodePin1), encoderMoved, FALLING);
+  //register peer
+  memcpy(peerInfo.peer_addr, broadcastAddress, 6);
+  peerInfo.channel = 0;
+  peerInfo.encrypt = false;
+
+  //Add peer
+  if (esp_now_add_peer(&peerInfo) != ESP_OK) {
+    Serial.print("Failed to add peer");
+    return;
+  }
 }
 
 void loop() {
+  myData.userInput = 1;
   //sends data
-  esp_err_t result = esp_now_send(broadcastAdress, (uint8_t*) &myData, sizeof(myData));
+  esp_err_t result = esp_now_send(broadcastAddress, (uint8_t*) &myData, sizeof(myData));
 
   //checks if message sent correctly
-    //This should be commented out later
-  if (result == ESP_OK) Serial.print("Sent with success");
-  else Serial.print("Error sending data");
+    //This should be commented out later, maybe not actually
+  if (result == ESP_OK) Serial.print("Sent with success\n");
+  else Serial.print("Error sending data\n");
   delay(50);
 }
