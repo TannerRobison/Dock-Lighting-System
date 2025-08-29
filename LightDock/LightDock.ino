@@ -18,10 +18,10 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
 
 void encoderMoved (int inputData){
   //puts input on exponential scale
-  int scaledInput = pow(3, inputData / 20);
+  double scaledInput = pow(3, (double)inputData / 20);
   
   //Maps scaled input range to pwm signal range
-  int lightValue = map(scaledInput, 0,  243, 0, 255); //243 because 3^(x/20) = 243
+  float lightValue = map(scaledInput, 0,  243, 0, 255); //243 because 3^(x/20) = 243
 
   if (inputData == 0) lightValue = 0;
   analogWrite(pwmPin, lightValue);
