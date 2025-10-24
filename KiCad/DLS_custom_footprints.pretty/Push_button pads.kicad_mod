@@ -1,0 +1,86 @@
+(footprint "Push_button pads"
+	(version 20241229)
+	(generator "pcbnew")
+	(generator_version "9.0")
+	(layer "F.Cu")
+	(property "Reference" "Push_Button"
+		(at 0 -4.04 0)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "7ab830f6-51b6-43af-823b-d8735e6f3235")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+		)
+	)
+	(property "Value" "SW"
+		(at 0 -2.54 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "46d58a1f-3ef8-4565-8d59-c4f200120d46")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "87825c10-8530-4904-b752-529ee34a1399")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "84ccbc9f-dc60-4d59-a2de-536d5ca2175e")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr smd)
+	(fp_text user "${REFERENCE}"
+		(at 0 -1.04 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "ac0554eb-fae5-4cbe-982a-4c0a0217f5a0")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(pad "1" smd roundrect
+		(at -2.54 0)
+		(size 3 2)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.15)
+		(thermal_bridge_angle 45)
+		(uuid "3fabb190-50d3-4f76-9ec3-c5cefabe91aa")
+	)
+	(pad "2" smd roundrect
+		(at 2.54 0)
+		(size 3 2)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.15)
+		(thermal_bridge_angle 45)
+		(uuid "e2200a6a-ed36-4d3d-8e03-b9c1dad8a62f")
+	)
+	(embedded_fonts no)
+)

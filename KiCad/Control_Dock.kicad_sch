@@ -3500,7 +3500,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "DLS_custom_footprints:Push_button pads"
 			(at 33.02 94.996 0)
 			(effects
 				(font
@@ -3703,10 +3703,9 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "2f0ae6f1-5c44-4e08-a96e-daee7721e244")
 		(property "Reference" "D2"
-			(at 129.8575 53.34 0)
+			(at 128.27 42.164 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3714,7 +3713,7 @@
 			)
 		)
 		(property "Value" "LED"
-			(at 129.8575 50.8 0)
+			(at 128.27 44.196 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3782,7 +3781,7 @@
 		(dnp no)
 		(uuid "2f4f92bb-c748-4bff-b8d0-311a0328efc0")
 		(property "Reference" "D3"
-			(at 129.8575 41.91 0)
+			(at 128.27 29.718 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3790,7 +3789,7 @@
 			)
 		)
 		(property "Value" "LED"
-			(at 129.8575 39.37 0)
+			(at 128.27 32.004 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3988,10 +3987,9 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "3ad2c9f3-78eb-4854-a8d2-ab0c023f976a")
 		(property "Reference" "D1"
-			(at 129.8575 63.5 0)
+			(at 128.27 52.832 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3999,7 +3997,7 @@
 			)
 		)
 		(property "Value" "LED"
-			(at 129.8575 60.96 0)
+			(at 128.27 54.61 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4148,7 +4146,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "DLS_custom_footprints:Alps EC11E series encoders"
 			(at 227.33 36.576 0)
 			(effects
 				(font
@@ -4230,7 +4228,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 41.91 50.8 0)
 			(effects
 				(font
@@ -4630,7 +4628,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 196.85 33.02 0)
 			(effects
 				(font
@@ -4700,7 +4698,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 248.92 33.02 0)
 			(effects
 				(font
@@ -4968,7 +4966,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 196.85 40.64 0)
 			(effects
 				(font
@@ -5102,7 +5100,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 139.7 58.928 90)
 			(effects
 				(font
@@ -5170,7 +5168,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 139.7 48.768 90)
 			(effects
 				(font
@@ -5198,10 +5196,10 @@
 			)
 		)
 		(pin "2"
-			(uuid "c6c625e4-817e-49da-8805-ccf2cf538760")
+			(uuid "c6c625e4-817e-49da-8805-ccf2cf538761")
 		)
 		(pin "1"
-			(uuid "94f7f75d-95ef-40b8-bb95-6677f2a609d5")
+			(uuid "94f7f75d-95ef-40b8-bb95-6677f2a609d6")
 		)
 		(instances
 			(project ""
@@ -5306,7 +5304,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 248.92 40.64 0)
 			(effects
 				(font
@@ -5442,7 +5440,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "DLS_custom_footprints:Push_button pads"
 			(at 60.96 36.83 0)
 			(effects
 				(font
@@ -5578,7 +5576,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 208.28 45.72 0)
 			(effects
 				(font
@@ -5606,10 +5604,10 @@
 			)
 		)
 		(pin "1"
-			(uuid "29262803-7b52-4a93-8e91-432ccb9a0eee")
+			(uuid "29262803-7b52-4a93-8e91-432ccb9a0eef")
 		)
 		(pin "2"
-			(uuid "45399ceb-2e01-453b-969f-590a5e9402e9")
+			(uuid "45399ceb-2e01-453b-969f-590a5e9402ea")
 		)
 		(instances
 			(project ""
@@ -5646,7 +5644,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 139.7 37.338 90)
 			(effects
 				(font
@@ -5674,10 +5672,10 @@
 			)
 		)
 		(pin "2"
-			(uuid "c6c625e4-817e-49da-8805-ccf2cf538760")
+			(uuid "c6c625e4-817e-49da-8805-ccf2cf538762")
 		)
 		(pin "1"
-			(uuid "94f7f75d-95ef-40b8-bb95-6677f2a609d5")
+			(uuid "94f7f75d-95ef-40b8-bb95-6677f2a609d7")
 		)
 		(instances
 			(project ""
@@ -5716,7 +5714,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "DLS_custom_footprints:Push_button pads"
 			(at 33.02 36.83 0)
 			(effects
 				(font
@@ -5786,7 +5784,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 55.88 50.8 0)
 			(effects
 				(font
@@ -5856,7 +5854,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 208.28 33.02 0)
 			(effects
 				(font
@@ -5884,10 +5882,10 @@
 			)
 		)
 		(pin "2"
-			(uuid "208b8eb4-7313-449f-b1ed-f2165befe1c5")
+			(uuid "208b8eb4-7313-449f-b1ed-f2165befe1c6")
 		)
 		(pin "1"
-			(uuid "35daa43a-e304-4252-a162-0dca28f8b31c")
+			(uuid "35daa43a-e304-4252-a162-0dca28f8b31d")
 		)
 		(instances
 			(project ""
@@ -5926,7 +5924,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 27.94 50.8 0)
 			(effects
 				(font
@@ -6062,7 +6060,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "DLS_custom_footprints:Push_button pads"
 			(at 46.99 36.83 0)
 			(effects
 				(font
@@ -6159,7 +6157,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "0a316f17-ac99-49df-92d8-0daee812244f")
+			(uuid "0a316f17-ac99-49df-92d8-0daee8122450")
 		)
 		(instances
 			(project ""
