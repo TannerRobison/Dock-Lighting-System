@@ -10,31 +10,37 @@
 		(rev "1.0")
 	)
 	(lib_symbols
-		(symbol "Connector:Barrel_Jack"
+		(symbol "Device:Battery"
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
-				(offset 1.016)
+				(offset 0)
+				(hide yes)
 			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
-			(property "Reference" "J"
-				(at 0 5.334 0)
+			(property "Reference" "BT"
+				(at 2.54 2.54 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
+					(justify left)
 				)
 			)
-			(property "Value" "Barrel_Jack"
-				(at 0 -5.08 0)
+			(property "Value" "Battery"
+				(at 2.54 0 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
+					(justify left)
 				)
 			)
 			(property "Footprint" ""
-				(at 1.27 -1.016 0)
+				(at 0 1.524 90)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -43,7 +49,7 @@
 				)
 			)
 			(property "Datasheet" "~"
-				(at 1.27 -1.016 0)
+				(at 0 1.524 90)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -51,7 +57,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "DC Barrel Jack"
+			(property "Description" "Multiple-cell battery"
 				(at 0 0 0)
 				(effects
 					(font
@@ -60,7 +66,7 @@
 					(hide yes)
 				)
 			)
-			(property "ki_keywords" "DC power barrel jack connector"
+			(property "ki_keywords" "batt voltage-source cell"
 				(at 0 0 0)
 				(effects
 					(font
@@ -69,57 +75,12 @@
 					(hide yes)
 				)
 			)
-			(property "ki_fp_filters" "BarrelJack*"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "Barrel_Jack_0_1"
+			(symbol "Battery_0_1"
 				(rectangle
-					(start -5.08 3.81)
-					(end 5.08 -3.81)
+					(start -2.286 1.778)
+					(end 2.286 1.524)
 					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-				(polyline
-					(pts
-						(xy -3.81 -2.54) (xy -2.54 -2.54) (xy -1.27 -1.27) (xy 0 -2.54) (xy 2.54 -2.54) (xy 5.08 -2.54)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(arc
-					(start -3.302 1.905)
-					(mid -3.9343 2.54)
-					(end -3.302 3.175)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(arc
-					(start -3.302 1.905)
-					(mid -3.9343 2.54)
-					(end -3.302 3.175)
-					(stroke
-						(width 0.254)
+						(width 0)
 						(type default)
 					)
 					(fill
@@ -127,10 +88,32 @@
 					)
 				)
 				(rectangle
-					(start 3.683 3.175)
-					(end -3.302 1.905)
+					(start -2.286 -1.27)
+					(end 2.286 -1.524)
 					(stroke
-						(width 0.254)
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(rectangle
+					(start -1.524 1.016)
+					(end 1.524 0.508)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(rectangle
+					(start -1.524 -2.032)
+					(end 1.524 -2.54)
+					(stroke
+						(width 0)
 						(type default)
 					)
 					(fill
@@ -139,7 +122,67 @@
 				)
 				(polyline
 					(pts
-						(xy 5.08 2.54) (xy 3.81 2.54)
+						(xy 0 1.778) (xy 0 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 0) (xy 0 0.254)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 -0.508) (xy 0 -0.254)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 -1.016) (xy 0 -0.762)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 3.048) (xy 1.778 3.048)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 3.556) (xy 1.27 2.54)
 					)
 					(stroke
 						(width 0.254)
@@ -150,11 +193,11 @@
 					)
 				)
 			)
-			(symbol "Barrel_Jack_1_1"
+			(symbol "Battery_1_1"
 				(pin passive line
-					(at 7.62 2.54 180)
+					(at 0 5.08 270)
 					(length 2.54)
-					(name "~"
+					(name "+"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -170,9 +213,9 @@
 					)
 				)
 				(pin passive line
-					(at 7.62 -2.54 180)
+					(at 0 -5.08 90)
 					(length 2.54)
-					(name "~"
+					(name "-"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1796,6 +1839,191 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Switch:SW_Nidec_CAS-120A1"
+			(pin_names
+				(offset 1)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "SW"
+				(at 0 4.318 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "SW_Nidec_CAS-120A1"
+				(at 0 -5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" "Button_Switch_SMD:Nidec_Copal_CAS-120A"
+				(at 0 -10.16 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "https://www.nidec-components.com/e/catalog/switch/cas.pdf"
+				(at 0 -7.62 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Switch, single pole double throw"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "switch single-pole double-throw spdt ON-ON"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "*Nidec?Copal?CAS?120A*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "SW_Nidec_CAS-120A1_0_1"
+				(circle
+					(center -2.032 0)
+					(radius 0.4572)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.651 0.254) (xy 1.651 2.286)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 2.032 2.54)
+					(radius 0.4572)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 2.032 -2.54)
+					(radius 0.4572)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "SW_Nidec_CAS-120A1_1_1"
+				(rectangle
+					(start -3.175 3.81)
+					(end 3.175 -3.81)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 2.54)
+					(name "B"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 5.08 2.54 180)
+					(length 2.54)
+					(name "A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 5.08 -2.54 180)
+					(length 2.54)
+					(name "C"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Switch:SW_Push"
 			(pin_numbers
 				(hide yes)
@@ -2298,26 +2526,6 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "likely to switch to lithium ion battery\n"
-		(exclude_from_sim no)
-		(at 43.18 77.216 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "10a71d30-af8b-400f-b15e-304cc159babe")
-	)
-	(text "Powered By 12VDC \nWallwart >= 1A"
-		(exclude_from_sim no)
-		(at 52.324 80.772 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "4b58b3b2-b051-4760-a456-d46484f905db")
-	)
 	(junction
 		(at 41.91 30.48)
 		(diameter 0)
@@ -2642,6 +2850,16 @@
 	)
 	(wire
 		(pts
+			(xy 38.1 100.33) (xy 20.32 100.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4230f90c-87d3-4541-9f76-c2f98050a877")
+	)
+	(wire
+		(pts
 			(xy 147.32 57.15) (xy 147.32 46.99)
 		)
 		(stroke
@@ -2752,6 +2970,26 @@
 	)
 	(wire
 		(pts
+			(xy 48.26 92.71) (xy 55.88 92.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6db8bbf4-45e0-465a-9d2b-e5759af2f707")
+	)
+	(wire
+		(pts
+			(xy 20.32 90.17) (xy 38.1 90.17)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "71e236a8-b3a5-4959-b8e0-6e1af5d0996d")
+	)
+	(wire
+		(pts
 			(xy 41.91 31.75) (xy 41.91 30.48)
 		)
 		(stroke
@@ -2769,6 +3007,16 @@
 			(type default)
 		)
 		(uuid "743794d1-0635-422b-8108-1e6627c97fe4")
+	)
+	(wire
+		(pts
+			(xy 38.1 95.25) (xy 38.1 100.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "79eaf90f-fb01-4629-bbf8-cdc693b875d5")
 	)
 	(wire
 		(pts
@@ -2832,16 +3080,6 @@
 	)
 	(wire
 		(pts
-			(xy 39.37 96.52) (xy 41.91 96.52)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8abcfff9-52b4-4392-96a2-798bcae62f56")
-	)
-	(wire
-		(pts
 			(xy 208.28 35.56) (xy 208.28 43.18)
 		)
 		(stroke
@@ -2889,16 +3127,6 @@
 			(type default)
 		)
 		(uuid "a62dad29-31aa-4904-9e0a-38ad0991ba22")
-	)
-	(wire
-		(pts
-			(xy 39.37 91.44) (xy 41.91 91.44)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a78287b1-6379-49ff-821e-ef34b8a97052")
 	)
 	(wire
 		(pts
@@ -3050,16 +3278,6 @@
 		)
 		(uuid "e60c9025-962f-47dd-ae57-ed647337765d")
 	)
-	(wire
-		(pts
-			(xy 41.91 91.44) (xy 41.91 90.17)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "eb0df079-1562-40b2-ad5b-7bbf84b4e5fa")
-	)
 	(bus
 		(pts
 			(xy 62.23 48.26) (xy 62.23 45.72)
@@ -3079,16 +3297,6 @@
 			(type default)
 		)
 		(uuid "f52ae5e2-3c2e-4c28-a46b-10992a5c0632")
-	)
-	(wire
-		(pts
-			(xy 41.91 96.52) (xy 41.91 97.79)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fe4a935f-469a-460a-9caf-766025ed48db")
 	)
 	(label "L3"
 		(at 123.19 57.15 0)
@@ -3475,42 +3683,33 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector:Barrel_Jack")
-		(at 31.75 93.98 0)
+		(lib_id "Switch:SW_Nidec_CAS-120A1")
+		(at 43.18 92.71 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "2283c7d4-c5b3-47ef-9f0d-19d3e7370e09")
-		(property "Reference" "J1"
-			(at 31.75 85.09 0)
+		(uuid "1df0af50-a4a2-4e35-b1ff-afba8e77ac3a")
+		(property "Reference" "SW1"
+			(at 43.18 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Value" "Barrel_Jack"
-			(at 31.75 87.63 0)
+		(property "Value" "SW_Nidec_CAS-120A1"
+			(at 43.18 86.36 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Footprint" "DLS_custom_footprints:Push_button pads"
-			(at 33.02 94.996 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 33.02 94.996 0)
+		(property "Footprint" "custom:3-pin switch"
+			(at 43.18 82.55 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3518,8 +3717,8 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "DC Barrel Jack"
-			(at 31.75 93.98 0)
+		(property "Datasheet" "https://www.nidec-components.com/e/catalog/switch/cas.pdf"
+			(at 43.18 85.09 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3527,16 +3726,28 @@
 				(hide yes)
 			)
 		)
-		(pin "1"
-			(uuid "dc5eae42-384e-4e34-9ab1-a2ce7d2f7ab4")
+		(property "Description" "Switch, single pole double throw"
+			(at 43.18 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
 		)
 		(pin "2"
-			(uuid "21add1ab-17b2-478f-b414-52411bff72e4")
+			(uuid "03b2e109-bcd9-499c-9290-ced7bf399db1")
+		)
+		(pin "1"
+			(uuid "4e8fb5ff-ddc4-4c33-91a1-7ce90c79697a")
+		)
+		(pin "3"
+			(uuid "d159e8e7-dae1-4015-8221-b4bb1b133a73")
 		)
 		(instances
 			(project ""
 				(path "/9b895783-7004-4aa7-a2af-83d099131a9c"
-					(reference "J1")
+					(reference "SW1")
 					(unit 1)
 				)
 			)
@@ -4146,7 +4357,7 @@
 				)
 			)
 		)
-		(property "Footprint" "DLS_custom_footprints:Alps EC11E series encoders"
+		(property "Footprint" "Rotary_Encoder:RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm_MountingHoles"
 			(at 227.33 36.576 0)
 			(effects
 				(font
@@ -4535,72 +4746,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:+12V")
-		(at 41.91 90.17 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "6fb844c3-2cdf-45d6-b9d2-82d6d6eaf8ea")
-		(property "Reference" "#PWR01"
-			(at 41.91 93.98 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+12V"
-			(at 41.91 85.09 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 41.91 90.17 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 41.91 90.17 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+12V\""
-			(at 41.91 90.17 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "9f7df6f3-5806-412d-9e0c-eda03f46d755")
-		)
-		(instances
-			(project ""
-				(path "/9b895783-7004-4aa7-a2af-83d099131a9c"
-					(reference "#PWR01")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:R_Small")
 		(at 196.85 33.02 0)
 		(unit 1)
@@ -4741,6 +4886,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:+12V")
+		(at 55.88 92.71 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "8e18be6c-c70d-492d-bd87-60df8c0f6eb1")
+		(property "Reference" "#PWR020"
+			(at 55.88 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+12V"
+			(at 55.88 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 55.88 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 55.88 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+12V\""
+			(at 55.88 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "b4ce4fb2-81e0-49d1-bebf-5512f4aa64e1")
+		)
+		(instances
+			(project "Control_Dock"
+				(path "/9b895783-7004-4aa7-a2af-83d099131a9c"
+					(reference "#PWR020")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 196.85 43.18 0)
 		(unit 1)
@@ -4867,6 +5078,76 @@
 			(project "Control_Dock"
 				(path "/9b895783-7004-4aa7-a2af-83d099131a9c"
 					(reference "#PWR010")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:Battery")
+		(at 20.32 95.25 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "9511487f-35d5-495e-8a3e-243b9cc8486a")
+		(property "Reference" "BT1"
+			(at 24.13 93.4084 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "12V Li-ion"
+			(at 24.13 95.9484 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "DLS_custom_footprints:Push_button pads"
+			(at 20.32 93.726 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 20.32 93.726 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Multiple-cell battery"
+			(at 20.32 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "0a5ca14a-5034-463e-896c-962079311de0")
+		)
+		(pin "1"
+			(uuid "46f5b530-b00b-49f6-b9ae-ff8c0f961400")
+		)
+		(instances
+			(project ""
+				(path "/9b895783-7004-4aa7-a2af-83d099131a9c"
+					(reference "BT1")
 					(unit 1)
 				)
 			)
@@ -5205,72 +5486,6 @@
 			(project ""
 				(path "/9b895783-7004-4aa7-a2af-83d099131a9c"
 					(reference "R2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 41.91 97.79 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "b7f41bf6-142e-4ae1-b859-9465c661de1f")
-		(property "Reference" "#PWR02"
-			(at 41.91 104.14 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 41.91 102.87 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 41.91 97.79 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 41.91 97.79 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 41.91 97.79 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "6397cb68-e142-4d78-bc4d-44aa13baf2ca")
-		)
-		(instances
-			(project ""
-				(path "/9b895783-7004-4aa7-a2af-83d099131a9c"
-					(reference "#PWR02")
 					(unit 1)
 				)
 			)
