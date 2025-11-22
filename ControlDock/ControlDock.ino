@@ -3,8 +3,8 @@
 
 const int upperLimit = 100;
 const int lowerLimit = 0;
-const int encodePin1 = D8;
-const int encodePin2 = D9;
+const int encodePin1 = D9;
+const int encodePin2 = D8;
 
 int currentMillis = 0; 
 int previousMillis = 0;
