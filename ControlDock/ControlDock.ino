@@ -1,67 +1,91 @@
 #include <esp_now.h>
 #include <WiFi.h>
+#include <esp_sleep.h>
 
-const int upperLimit = 255;  // Changed to 255 for PWM
+const int upperLimit = 255;
 const int lowerLimit = 0;
 const int encodePin1 = D9;
 const int encodePin2 = D8;
 
-// Improved timing variables
+// Timing variables
 unsigned long currentMillis = 0;
-unsigned long previousEncoderMillis = 0;
 unsigned long previousSendMillis = 0;
 
-// Smoother control parameters
-const int encoderPollingInterval = 2; // Much shorter for responsiveness
-const int sendInterval = 50; // Control how often we send data
+// Control parameters
+const int sendInterval = 50;
 const int baseIncrement = 3;
 const int accelerationIncrement = 5;
-const unsigned long accelerationThreshold = 200; // ms for acceleration
+const unsigned long accelerationThreshold = 200;
 
 // Encoder state tracking
-int encoderPos = 0;
 int lastEncoded = 0;
 unsigned long lastEncoderTime = 0;
-int rotationCount = 0; // For acceleration
+int rotationCount = 0;
 
 // Mode select variables
-int selectedMode = 1;  // Start with mode 1 (controls light station 1)
-int button1 = A1; //mode 1
-int button2 = A2; //mode 2
-int button3 = A3; //mode 3
+int selectedMode = 1;
+int button1 = A1;
+int button2 = A2;
+int button3 = A3;
 
 // LED pins
 int yellowLed = D2;
 int orangeLed = D3;
 int redLed = D4;
 
-// Router MAC address (your central hub)
-uint8_t routerAddress[] = {0x48, 0xCA, 0x43, 0x2F, 0x6A, 0x24}; // Router MAC
+// Sleep variables
+unsigned long lastActivityTime = 0;
+const unsigned long sleepWarning = 15000; //15 seconds warning
+const unsigned long sleepTimeout = 17000; //20 seconds
 
-// Control station ID - MAKE THIS UNIQUE FOR EACH CONTROL STATION
-const int CONTROL_STATION_ID = 1; // Change this for each control station (1, 2, 3, etc.)
+// Router MAC address
+uint8_t routerAddress[] = {0x48, 0xCA, 0x43, 0x2F, 0x6A, 0x24};
+
+// Control station ID - MAKE UNIQUE FOR EACH CONTROL STATION
+const int CONTROL_STATION_ID = 1;
 
 typedef struct struct_message {
   int control_station_id;
   int light_station_id;
   uint8_t pwmValue;
-  bool valueChanged = false;
 } struct_message;
 
 struct_message myData;
-
 esp_now_peer_info_t peerInfo;
 
+// Track current values for each light station
+uint8_t lightStationValues[4] = {0, 0, 0, 0}; // Index 0 unused, 1-3 for light stations
+
+// Callback when data is sent
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
   if (status == ESP_NOW_SEND_SUCCESS) {
-    myData.valueChanged = false; // Reset flag on successful send
     Serial.println("✓ Delivery Success");
   } else {
     Serial.println("✗ Delivery Fail");
   }
 }
 
-// Improved encoder reading using state machine
+// Callback when data is received from light stations
+void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
+  struct_message receivedData;
+  memcpy(&receivedData, incomingData, sizeof(receivedData));
+  
+  // Update the stored value for this light station
+  if (receivedData.light_station_id >= 1 && receivedData.light_station_id <= 3) {
+    lightStationValues[receivedData.light_station_id] = receivedData.pwmValue;
+    
+    // If this is for our currently selected mode, update display
+    if (receivedData.light_station_id == selectedMode) {
+      myData.pwmValue = receivedData.pwmValue;
+      Serial.print("Updated current value for station ");
+      Serial.print(selectedMode);
+      Serial.print(": ");
+      Serial.println(myData.pwmValue);
+    }
+  }
+}
+
+// Encoder reading
 void readEncoder() {
   int MSB = digitalRead(encodePin1);
   int LSB = digitalRead(encodePin2);
@@ -70,10 +94,8 @@ void readEncoder() {
   int sum = (lastEncoded << 2) | encoded;
   
   if (sum == 0b1101 || sum == 0b0100 || sum == 0b0010 || sum == 0b1011) {
-    // Clockwise
     updateBrightness(1);
   } else if (sum == 0b1110 || sum == 0b0111 || sum == 0b0001 || sum == 0b1000) {
-    // Counter-clockwise
     updateBrightness(-1);
   }
   
@@ -81,7 +103,8 @@ void readEncoder() {
 }
 
 void updateBrightness(int direction) {
-  currentMillis = millis();
+  //currentMillis = millis();
+  lastActivityTime = millis();
   
   // Calculate acceleration
   int increment = baseIncrement;
@@ -96,21 +119,24 @@ void updateBrightness(int direction) {
   
   lastEncoderTime = currentMillis;
   
-  // Apply change - scale to 0-255 for PWM
+  // Apply change
   int newValue = myData.pwmValue + (direction * increment);
-  
-  // Constrain value
   newValue = constrain(newValue, lowerLimit, upperLimit);
   
   // Only update if value changed
   if (newValue != myData.pwmValue) {
     myData.pwmValue = newValue;
-    myData.valueChanged = true;
+    
+    // Update stored value for this light station
+    lightStationValues[selectedMode] = newValue;
     
     Serial.print("User Input: ");
     Serial.print(myData.pwmValue);
     Serial.print(" | Light Station: ");
     Serial.println(myData.light_station_id);
+    
+    // Send the update
+    sendData();
   }
 }
 
@@ -126,41 +152,96 @@ void changeMode(){
     selectedMode = 3;
   }
 
-  // Update LEDs and light station target only if mode changed
+  // Update if mode changed
   if (oldMode != selectedMode) {
-    myData.light_station_id = selectedMode; // Set target light station
-    myData.valueChanged = true; // Force send to update the light station
+    lastActivityTime = millis();
+    myData.light_station_id = selectedMode;
     
     // Update LED indicators
     digitalWrite(yellowLed, (selectedMode == 3));
     digitalWrite(orangeLed, (selectedMode == 2));
     digitalWrite(redLed, (selectedMode == 1));
     
+    // Set current value to the stored value for this light station
+    myData.pwmValue = lightStationValues[selectedMode];
+    
     Serial.print("Mode changed to: ");
     Serial.print(selectedMode);
-    Serial.print(" | Controlling Light Station: ");
-    Serial.println(selectedMode);
+    Serial.print(" | Current value: ");
+    Serial.println(myData.pwmValue);
     
-    // Send immediate update
-    sendData();
+    // Request current value from light station to ensure we're in sync
+    requestCurrentValue();
+  }
+}
+
+void requestCurrentValue() {
+  // Send a special request to get the current value
+  struct_message requestData;
+  requestData.control_station_id = CONTROL_STATION_ID;
+  requestData.light_station_id = selectedMode;
+  requestData.pwmValue = 255; // Special value indicating "request current state"
+  
+  esp_err_t result = esp_now_send(routerAddress, (uint8_t*) &requestData, sizeof(requestData));
+  
+  if (result == ESP_OK) {
+    Serial.print("Requested current value from light station ");
+    Serial.println(selectedMode);
+  } else {
+    Serial.println("Error requesting current value");
   }
 }
 
 void sendData() {
-  if (myData.valueChanged) {
-    esp_err_t result = esp_now_send(routerAddress, (uint8_t*) &myData, sizeof(myData));
+  esp_err_t result = esp_now_send(routerAddress, (uint8_t*) &myData, sizeof(myData));
+  
+  if (result == ESP_OK) {
+    Serial.print("Sent: Station ");
+    Serial.print(myData.light_station_id);
+    Serial.print(" | PWM: ");
+    Serial.println(myData.pwmValue);
+  } else {
+    Serial.println("Error sending data");
+  }
+  
+  previousSendMillis = currentMillis;
+}
+
+void checkSleep(){
+  //Serial.println("Checking if needs to sleep");
+  Serial.println(currentMillis - lastActivityTime);
+  if ((currentMillis - lastActivityTime) > sleepTimeout) {
+    Serial.println("Entering deep sleep, goodnight");
+
+    //wake up on encoder movement or button press
+    esp_sleep_enable_ext0_wakeup(GPIO_NUM_18, LOW);
+    esp_sleep_enable_ext0_wakeup(GPIO_NUM_17, LOW);
+    esp_sleep_enable_ext0_wakeup(GPIO_NUM_2, HIGH);
+    esp_sleep_enable_ext0_wakeup(GPIO_NUM_3, HIGH);
+    esp_sleep_enable_ext0_wakeup(GPIO_NUM_4, HIGH);
+
+    //turn off Led's
+    digitalWrite(redLed, LOW);
+    digitalWrite(yellowLed, LOW);
+    digitalWrite(orangeLed,LOW);
     
-    if (result == ESP_OK) {
-      Serial.print("Sent: Station ");
-      Serial.print(myData.light_station_id);
-      Serial.print(" | PWM: ");
-      Serial.println(myData.pwmValue);
-    } else {
-      Serial.println("Error sending data");
-      // Don't reset valueChanged on error - retry next loop
-    }
-    
-    previousSendMillis = currentMillis;
+    //goodnight
+    esp_deep_sleep_start();
+  }
+
+  //5 second warning
+  else if ((currentMillis - lastActivityTime) > sleepWarning) {
+    //flash lights on
+    digitalWrite(redLed, HIGH);
+    digitalWrite(orangeLed, HIGH);
+    digitalWrite(yellowLed, HIGH);
+    delay(50);
+
+    //flash lights off
+    digitalWrite(redLed, LOW);
+    digitalWrite(orangeLed, LOW);
+    digitalWrite(yellowLed, LOW);
+    delay(50);
   }
 }
 
@@ -179,14 +260,14 @@ void setup() {
   pinMode(orangeLed, OUTPUT);
   pinMode(redLed, OUTPUT);
 
-  // Use both pins for interrupts for more reliable reading
+  // Encoder interrupts
   attachInterrupt(digitalPinToInterrupt(encodePin1), readEncoder, CHANGE);
   attachInterrupt(digitalPinToInterrupt(encodePin2), readEncoder, CHANGE);
 
   // Initialize WiFi
   WiFi.mode(WIFI_STA);
 
-  // Print MAC address (useful for router configuration)
+  // Print MAC address
   Serial.print("Control Station MAC: ");
   Serial.println(WiFi.macAddress());
   Serial.print("Control Station ID: ");
@@ -198,7 +279,9 @@ void setup() {
     return;
   }
 
+  // Register callbacks
   esp_now_register_send_cb(OnDataSent);
+  esp_now_register_recv_cb(OnDataRecv);
 
   // Register router as peer
   memcpy(peerInfo.peer_addr, routerAddress, 6);
@@ -212,14 +295,18 @@ void setup() {
 
   // Initialize data structure
   myData.control_station_id = CONTROL_STATION_ID;
-  myData.light_station_id = selectedMode;  // Start with controlling light station 1
-  myData.pwmValue = 0;  // Start at 0 brightness
-  myData.valueChanged = false;
+  myData.light_station_id = selectedMode;
+  myData.pwmValue = 0;
+
+  // Initialize light station values
+  lightStationValues[1] = 0;
+  lightStationValues[2] = 0;
+  lightStationValues[3] = 0;
 
   // Set initial LED state
-  digitalWrite(redLed, HIGH);  // Mode 1 active initially
+  digitalWrite(redLed, HIGH);
 
-  Serial.println("Control Station Ready!");
+  Serial.println("Control Station Ready - Bidirectional!");
   Serial.println("Use buttons 1-3 to select light station, encoder to adjust brightness");
 }
 
@@ -229,10 +316,8 @@ void loop() {
   // Check for mode changes
   changeMode();
   
-  // Send data when value has changed and at controlled interval
-  if (myData.valueChanged && (currentMillis - previousSendMillis >= sendInterval)) {
-    sendData();
-  }
+  //check sleep
+  checkSleep();
   
-  delay(1); // Small delay to prevent overwhelming the processor
+  delay(1);
 }

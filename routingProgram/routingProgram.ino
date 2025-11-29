@@ -10,12 +10,11 @@ typedef struct struct_message {
 
 // Create data structure instance
 struct_message incoming_data;
-struct_message outgoing_data;
 
-// MAC address mappings (replace with your actual MAC addresses)
-uint8_t control_station_1[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+// MAC address mappings - UPDATE THESE WITH YOUR ACTUAL MACs
+uint8_t control_station_1[] = {0x3C, 0x84, 0x27, 0xC4, 0x94, 0xF4}; 
 uint8_t control_station_2[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
-uint8_t control_station_3[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+uint8_t control_station_3[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};  
 
 uint8_t light_station_1[] = {0x3C, 0x84, 0x27, 0xC3, 0xD3, 0x64};
 uint8_t light_station_2[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
@@ -41,28 +40,32 @@ uint8_t* getLightStationMAC(int light_id) {
   }
 }
 
-// Callback when data is received from control stations
+// Callback when data is received (from control stations OR light stations)
 void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
   memcpy(&incoming_data, incomingData, sizeof(incoming_data));
   
-  Serial.print("Received from Control Station: ");
-  Serial.println(incoming_data.control_station_id);
-  Serial.print("Target Light Station: ");
-  Serial.println(incoming_data.light_station_id);
-  Serial.print("PWM Value: ");
-  Serial.println(incoming_data.pwmValue);
+  // Determine if this is from a control station or light station
+  bool fromLightStation = (incoming_data.control_station_id > 10); // Light stations use IDs > 10
   
-  // Forward the message to the appropriate light station
-  forwardToLightStation();
+  if (fromLightStation) {
+    // This is a response from a light station - forward to control station
+    Serial.print("Light Station ");
+    Serial.print(incoming_data.light_station_id);
+    Serial.print(" responding to Control Station ");
+    Serial.println(incoming_data.control_station_id);
+    
+    forwardToControlStation();
+  } else {
+    // This is a command from a control station - forward to light station
+    Serial.print("Control Station ");
+    Serial.print(incoming_data.control_station_id);
+    Serial.print(" -> Light Station ");
+    Serial.println(incoming_data.light_station_id);
+    
+    forwardToLightStation();
+  }
 }
 
-// Callback when data is sent to light stations
-void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
-  Serial.print("Send Status to Light Station: ");
-  Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Success" : "Fail");
-}
-
-// Forward received data to the target light station
 void forwardToLightStation() {
   uint8_t* target_mac = getLightStationMAC(incoming_data.light_station_id);
   
@@ -71,75 +74,90 @@ void forwardToLightStation() {
     return;
   }
   
-  // Prepare outgoing data
-  outgoing_data.control_station_id = incoming_data.control_station_id;
-  outgoing_data.light_station_id = incoming_data.light_station_id;
-  outgoing_data.pwmValue = incoming_data.pwmValue;
-  
-  // Add peer if not already added
+  // Add peer and send
   esp_now_peer_info_t peerInfo = {};
   memcpy(peerInfo.peer_addr, target_mac, 6);
   peerInfo.channel = 0;
   peerInfo.encrypt = false;
-  
   esp_now_add_peer(&peerInfo);
   
-  // Send data
-  esp_err_t result = esp_now_send(target_mac, (uint8_t *) &outgoing_data, sizeof(outgoing_data));
+  esp_err_t result = esp_now_send(target_mac, (uint8_t *) &incoming_data, sizeof(incoming_data));
   
   if (result == ESP_OK) {
-    Serial.println("Forwarding data to light station...");
+    Serial.println("Forwarded to light station");
   } else {
-    Serial.println("Error sending data to light station");
+    Serial.println("Error forwarding to light station");
   }
+}
+
+void forwardToControlStation() {
+  uint8_t* target_mac = getControlStationMAC(incoming_data.control_station_id);
+  
+  if (target_mac == nullptr) {
+    Serial.println("Error: Invalid control station ID");
+    return;
+  }
+  
+  // Add peer and send
+  esp_now_peer_info_t peerInfo = {};
+  memcpy(peerInfo.peer_addr, target_mac, 6);
+  peerInfo.channel = 0;
+  peerInfo.encrypt = false;
+  esp_now_add_peer(&peerInfo);
+  
+  esp_err_t result = esp_now_send(target_mac, (uint8_t *) &incoming_data, sizeof(incoming_data));
+  
+  if (result == ESP_OK) {
+    Serial.println("Forwarded to control station");
+  } else {
+    Serial.println("Error forwarding to control station");
+  }
+}
+
+void addAllPeers() {
+  esp_now_peer_info_t peerInfo = {};
+  peerInfo.channel = 0;
+  peerInfo.encrypt = false;
+  
+  // Add control stations
+  memcpy(peerInfo.peer_addr, control_station_1, 6);
+  esp_now_add_peer(&peerInfo);
+  
+  memcpy(peerInfo.peer_addr, control_station_2, 6);
+  esp_now_add_peer(&peerInfo);
+  
+  memcpy(peerInfo.peer_addr, control_station_3, 6);
+  esp_now_add_peer(&peerInfo);
+  
+  // Add light stations
+  memcpy(peerInfo.peer_addr, light_station_1, 6);
+  esp_now_add_peer(&peerInfo);
+  
+  memcpy(peerInfo.peer_addr, light_station_2, 6);
+  esp_now_add_peer(&peerInfo);
+  
+  memcpy(peerInfo.peer_addr, light_station_3, 6);
+  esp_now_add_peer(&peerInfo);
 }
 
 void setup() {
   Serial.begin(115200);
-  
-  // Set device as WiFi Station
   WiFi.mode(WIFI_STA);
   
-  // Print MAC address (useful for setting up other devices)
   Serial.print("Router MAC Address: ");
   Serial.println(WiFi.macAddress());
   
-  // Initialize ESP-NOW
   if (esp_now_init() != ESP_OK) {
     Serial.println("Error initializing ESP-NOW");
     return;
   }
   
-  // Register callbacks
   esp_now_register_recv_cb(OnDataRecv);
-  esp_now_register_send_cb(OnDataSent);
+  addAllPeers();
   
-  // Add all control stations as peers (for receiving)
-  addControlStationsAsPeers();
-  
-  Serial.println("ESP-NOW Router Hub Ready!");
-  Serial.println("Waiting for control station commands...");
-}
-
-// Add all known control stations as peers
-void addControlStationsAsPeers() {
-  // Add control station 1
-  esp_now_peer_info_t peerInfo = {};
-  memcpy(peerInfo.peer_addr, control_station_1, 6);
-  peerInfo.channel = 0;
-  peerInfo.encrypt = false;
-  esp_now_add_peer(&peerInfo);
-  
-  // Add control station 2
-  memcpy(peerInfo.peer_addr, control_station_2, 6);
-  esp_now_add_peer(&peerInfo);
-  
-  // Add control station 3
-  memcpy(peerInfo.peer_addr, control_station_3, 6);
-  esp_now_add_peer(&peerInfo);
+  Serial.println("ESP-NOW Bidirectional Router Ready!");
 }
 
 void loop() {
-  // Main loop doesn't need to do much - everything is callback driven
   delay(1000);
 }
